@@ -41,6 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll();
     }
 
+    //test
     public void create(ArticleDto articleDto) {
 
         Article article = ArticleToDto.toArticle(articleDto);
