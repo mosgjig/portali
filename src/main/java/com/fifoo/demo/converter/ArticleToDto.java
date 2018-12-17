@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class ArticleToDto {
-
     public static ArticleDto toDto(Article article){
         ArticleDto articleDto = new ArticleDto();
         articleDto.setTitle(article.getTitle());
