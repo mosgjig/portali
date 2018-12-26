@@ -43,48 +43,22 @@ public class ArticleServiceImpl implements ArticleService {
 
     //test
     public void create(ArticleDto articleDto) {
-
         Article article = ArticleToDto.toArticle(articleDto);
         Optional<Category> category = categoryRepository.findByName(articleDto.getCategory());
-        if(category.isPresent()) {
+        if(category.isPresent())
             article.setCategory(category.get());
-        } else {
+        else
             throw new CategoryNotFoundException("Category doesn't exist.");
-        }
 
         List <Tag> tagDb = tagRepository.findAll();
-
-        tagDb = tagDb.stream().filter(e-> articleDto.getTag().contains(e.getTitle())).collect(Collectors.toList());
-        List<Tag> tagDto = articleDto.getTag().stream().map(e ->
-        {
-            Tag asd = new Tag();
-            asd.setTitle(e);
-            return asd;
-        }).collect(Collectors.toList());
+        List<Tag> tagDto = articleDto.getTag().stream().map(e -> new Tag(e)).collect(Collectors.toList());
+        tagDb = tagDb.stream().filter(e-> tagDto.contains(e)).collect(Collectors.toList());
         tagDto.removeAll(tagDb);
         article.getTags().addAll(tagDb);
         article.getTags().addAll(tagDto);
 
-//
-//        int tagsSize = articleDto.getTag().size();
-//        for(int i = 0; i < tagsSize; i++) {
-//            String tagName = articleDto.getTag().get(i);
-//            Optional<Tag> tag = tagRepository.findByTitle(tagName);
-//            if (tag.isPresent()) {
-//                article.getTags().add(tag.get());
-//            } else {
-//                Tag newTag = new Tag();
-//                newTag.setTitle(tagName);
-//                article.getTags().add(newTag);
-//            }
-//        }
         articleRepository.save(article);
     }
-//        articleRepository.save(article);
-//        List<String> tags =  article.getTags().stream().map(Tag::getTitle).collect(Collectors.toList());
-//        List<Tag> existingTags = tagRepository.findByTitleIn(tags);
-//        article.getTags().addAll(existingTags);
-
     @Override
     public ArticleDto delete(long id) {
         Optional <Article> optionalArticle = articleRepository.findById(id);
@@ -98,39 +72,35 @@ public class ArticleServiceImpl implements ArticleService {
         return null;
     }
 
-    public void update(long id,ArticleDto article){
-        if(id != article.getId()) {
+    public void update(long id,ArticleDto articleDto){
 
-        }
         Article articleDb = null;
         Optional<Article> optionalArticle = articleRepository.findById(id);
-        if(optionalArticle.isPresent()){
+        if(optionalArticle.isPresent())
             articleDb = optionalArticle.get();
-        }else{throw new ArticleNotFoundException("You cannot update an article that doesn't exist!");}
+        else
+            throw new ArticleNotFoundException("You cannot update an article that doesn't exist!");
 
-        Optional<Category> category = categoryRepository.findByName(article.getCategory());
+        Optional<Category> category = categoryRepository.findByName(articleDto.getCategory());
         if(category.isPresent())
             articleDb.setCategory(category.get());
-
         else
             throw new CategoryNotFoundException("Category doesn't exist.");
 
-        articleDb.setContent(article.getContent());
-        articleDb.setTitle(article.getTitle());
-        articleDb.setDate(article.getDate());
+        articleDb.setContent(articleDto.getContent());
+        articleDb.setTitle(articleDto.getTitle());
+        articleDb.setDate(articleDto.getDate());
 
-        ArrayList<String> tagat = new ArrayList<>(article.getTag());
         articleDb.getTags().clear();
-        for(int i = 0; i < tagat.size(); i++) {
-            Optional<Tag> tag = tagRepository.findByTitle(tagat.get(i));
-            if (tag.isPresent()) {
-                articleDb.getTags().add(tag.get());
-            } else {
-                Tag create = new Tag();
-                create.setTitle(tagat.get(i));
-                articleDb.getTags().add(create);
-            }
-        }
+        List <Tag> tagDb = tagRepository.findAll();
+        List<Tag> tagDto = articleDto.getTag().stream().map(e -> new Tag(e)).collect(Collectors.toList());
+        tagDb = tagDb.stream().filter(e-> tagDto.contains(e)).collect(Collectors.toList());
+        tagDto.removeAll(tagDb);
+        articleDb.getTags().addAll(tagDb);
+        articleDb.getTags().addAll(tagDto);
+
+
+
         articleRepository.save(articleDb);
     }
 

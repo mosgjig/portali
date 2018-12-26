@@ -15,7 +15,7 @@ public class ArticleDto {
 
     private String category;
 
-    private List<String> tag;
+    private List<String> tags;
 
     public long getId()  {
         return id;
@@ -42,11 +42,11 @@ public class ArticleDto {
     }
 
     public List<String> getTag() {
-        return tag;
+        return tags;
     }
 
     public void setTag(List<String> tag) {
-        this.tag = tag;
+        this.tags = tag;
     }
 
     public String getContent() {
