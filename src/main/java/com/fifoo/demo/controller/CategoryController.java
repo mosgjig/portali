@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fifoo.demo.controller.constant.WebDefinition.CATEGORY;
+import static com.fifoo.demo.controller.constant.WebDefinition.CATEGORYID;
+import static com.fifoo.demo.controller.constant.WebDefinition.SLASH;
+
 @RestController
-@RequestMapping("/category")
+@RequestMapping(CATEGORY)
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -29,12 +33,12 @@ public class CategoryController {
         return categoryService.create(categoryDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(SLASH + CATEGORYID)
     public CategoryDto create(@PathVariable("id") long id){
         return categoryService.delete(id);
     }
 
-    @PutMapping("{/id}")
+    @PutMapping(SLASH + CATEGORYID)
     public CategoryDto update(@PathVariable("id") long id ,@RequestBody CategoryDto categoryDto){
         return categoryService.update(id,categoryDto);
     }

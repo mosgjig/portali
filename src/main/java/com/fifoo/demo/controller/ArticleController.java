@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+import static com.fifoo.demo.controller.constant.WebDefinition.*;
+
 @RestController
-@RequestMapping("/articles")
+@RequestMapping(ARTICLES)
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -32,29 +34,29 @@ public class ArticleController {
     {
         articleService.create(articleDto);
     }
-    @DeleteMapping("/{id}")
+
+    @DeleteMapping(SLASH + ARTICLEID)
     public void delete(@PathVariable("id") Long id){
         articleService.delete(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(SLASH + ARTICLEID)
     public void update(@PathVariable("id") Long id, @RequestBody ArticleDto article){
-
         articleService.update(id,article);
     }
 
-    @GetMapping("/from")
+    @GetMapping(FROM)
     public List <Article> getByDate(@RequestParam("date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
         return articleService.findByDate(date);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(SLASH + ARTICLEID)
     public Article getArticle(@PathVariable("id") Long id){
 
         return articleService.findById(id);
     }
 
-    @GetMapping("/getByTags")
+    @GetMapping(GETBYTAGS)
     public List<Article> getByTags(@RequestBody List<Tag> lista){
         return articleService.findByTags(lista);
     }

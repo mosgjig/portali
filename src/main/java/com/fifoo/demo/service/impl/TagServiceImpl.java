@@ -28,13 +28,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDto create(TagDto createTag) {
-        tagRepository.save(TagToDto.toTag(createTag));
-        return createTag;
+    public TagDto create(TagDto tagDto) {
+        tagRepository.save(TagToDto.toTag(tagDto));
+        return tagDto;
     }
     @Override
-    public TagDto delete(long tagId) {
+    public void delete(Long tagId) {
         tagRepository.deleteById(tagId);
-        return null;
     }
 }

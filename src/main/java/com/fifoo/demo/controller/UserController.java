@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fifoo.demo.controller.constant.WebDefinition.*;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping(USERS)
 public class UserController {
 
     private UserService userService;
@@ -29,18 +31,24 @@ public class UserController {
         return userService.create(userDto);
     }
 
-    @DeleteMapping("/{id}")
-    public UserDto delete(@PathVariable("id") long id){
-        return userService.delete(id);
+    @DeleteMapping(SLASH + USERID)
+    public void delete(@PathVariable("id") long id){
+        userService.delete(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(SLASH + USERID)
     public UserDto update(@PathVariable("id") long id , @RequestBody UserDto userDto){
         return userService.update(id,userDto);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping(SLASH + USERNAME)
     public UserDto getByUsername(@PathVariable("username") String username){
         return userService.findByUsername(username);
     }
+
+    @GetMapping(SLASH + USERID)
+    public User findOneUser(@PathVariable ("id") long id){
+        return userService.findOneUser(id);
+    }
+
 }

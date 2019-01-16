@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto delete(long id) {
+    public void delete(long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()){
             User newUser = userOptional.get();
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
         {
             throw new UserNotFoundException("This user doesnt exist.");
         }
-        return null;
+
     }
 
     @Override
@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
             newUser = optionalUser.get();
         } else{
             throw new UserNotFoundException("You cannot update a User that doesnt exist.");
-
         }
         newUser.setName(userDto.getName());
         newUser.setEmail(userDto.getEmail());
@@ -85,8 +84,20 @@ public class UserServiceImpl implements UserService {
         newUser.setLastname(userDto.getLastname());
         newUser.setUsername(userDto.getUsername());
 
-          userRepository.save(newUser);
+        userRepository.save(UserToDto.toUser(userDto));
+//          userRepository.save(newUser);
 
-            return null;
+            return userDto;
+    }
+
+    public User findOneUser(long id){
+        Optional<User> user  = userRepository.findById(id);
+         if(user.isPresent()){
+             User userReturned = user.get();
+             return userReturned;
+         }
+         else{
+             throw new UserNotFoundException("User with id : " +id+ " its not found.");
+         }
     }
 }

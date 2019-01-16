@@ -9,8 +9,8 @@ public interface TagService {
 
     List<Tag> getAll();
 
-    TagDto create( TagDto createTag);
+    TagDto create(TagDto tagDto);
 
-    TagDto delete(long id);
+    void delete(Long id);
 
 }

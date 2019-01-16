@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fifoo.demo.controller.constant.WebDefinition.SLASH;
+import static com.fifoo.demo.controller.constant.WebDefinition.TAGID;
+import static com.fifoo.demo.controller.constant.WebDefinition.TAGS;
+
 @RestController
-@RequestMapping("/tags")
+@RequestMapping(TAGS)
 public class TagController {
 
     private TagService tagService;
@@ -29,9 +33,9 @@ public class TagController {
         return tagService.create(createTag);
     }
 
-    @DeleteMapping("/{id}")
-    public TagDto delete(@PathVariable("id") long tagId){
-        return tagService.delete(tagId);
+    @DeleteMapping(SLASH + TAGID)
+    public void delete(@PathVariable("id") Long tagId){
+            tagService.delete(tagId);
     }
 
 }
