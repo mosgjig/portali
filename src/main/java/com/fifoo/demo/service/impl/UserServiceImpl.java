@@ -71,23 +71,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(long id, UserDto userDto) {
-        User newUser = null;
+        User foundUser = null;
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()) {
-            newUser = optionalUser.get();
+            foundUser = optionalUser.get();
         } else{
             throw new UserNotFoundException("You cannot update a User that doesnt exist.");
         }
-        newUser.setName(userDto.getName());
-        newUser.setEmail(userDto.getEmail());
-        newUser.setPassword(userDto.getPassword());
-        newUser.setLastname(userDto.getLastname());
-        newUser.setUsername(userDto.getUsername());
+        foundUser.setName(userDto.getName());
+        foundUser.setEmail(userDto.getEmail());
+        foundUser.setPassword(userDto.getPassword());
+        foundUser.setLastname(userDto.getLastname());
+        foundUser.setUsername(userDto.getUsername());
 
-        userRepository.save(UserToDto.toUser(userDto));
-//          userRepository.save(newUser);
+        userRepository.save(foundUser);
 
-            return userDto;
+            return UserToDto.toDto(foundUser);
     }
 
     public User findOneUser(long id){
