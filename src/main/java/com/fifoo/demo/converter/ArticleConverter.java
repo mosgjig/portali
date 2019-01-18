@@ -15,6 +15,7 @@ public class ArticleConverter {
     public static ArticleDto toDto(Article article){
 
         ArticleDto articleDto = new ArticleDto();
+        articleDto.setId(article.getId());
         articleDto.setTitle(article.getTitle());
         articleDto.setContent(article.getContent());
         articleDto.setDate(article.getDate());

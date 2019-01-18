@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface CategoryService {
 
-    List<Category> getAll();
-    CategoryDto create(CategoryDto categoryDto) throws CategoryFoundException;
-    void delete(Long id) throws CategoryNotFoundException;
-    CategoryDto update(Long id, CategoryDto categoryDto) throws CategoryNotFoundException;
+    public List<Category> getAll();
+    public CategoryDto create(CategoryDto categoryDto) throws CategoryFoundException;
+    public void delete(Long id) throws CategoryNotFoundException;
+    public CategoryDto update(Long id, CategoryDto categoryDto) throws CategoryNotFoundException;
 }

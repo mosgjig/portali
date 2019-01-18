@@ -28,9 +28,9 @@ public class ArticleController {
     }
 
     @PostMapping
-    public void create(@RequestBody ArticleDto articleDto) throws CategoryNotFoundException
+    public ArticleDto create(@RequestBody ArticleDto articleDto) throws CategoryNotFoundException
     {
-        articleService.create(articleDto);
+       return articleService.create(articleDto);
     }
 
     @DeleteMapping(SLASH + ID)

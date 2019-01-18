@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll();
     }
 
-    public void create(ArticleDto articleDto) throws CategoryNotFoundException{
+    public ArticleDto create(ArticleDto articleDto) throws CategoryNotFoundException{
         Article article = ArticleConverter.toArticle(articleDto);
         Optional<Category> category = categoryRepository.findByName(articleDto.getCategory());
         if(category.isPresent()) {
@@ -51,7 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.getTags().addAll(tagDb);
         article.getTags().addAll(tagDto);
 
-        articleRepository.save(article);
+       return ArticleConverter.toDto(articleRepository.save(article));
     }
     @Override
     public void delete(Long id) throws ArticleNotFoundException {

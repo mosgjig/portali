@@ -12,12 +12,12 @@ import java.util.List;
 
 public interface ArticleService {
 
-    List<Article> getAll();
-    void create(ArticleDto articleDto) throws CategoryNotFoundException;
-    void delete(Long id) throws ArticleNotFoundException;
-    ArticleDto update(Long id, ArticleDto article) throws ArticleNotFoundException, CategoryNotFoundException;
-    Article findById(Long id) throws ArticleNotFoundException;
-    List<Article> findByDate(Date date);
-    List<Article> findByTags(List<Tag> tagList);
-    List<Article> findByCategory(List<Category> categoryList);
+    public List<Article> getAll();
+    public ArticleDto create(ArticleDto articleDto) throws CategoryNotFoundException;
+    public void delete(Long id) throws ArticleNotFoundException;
+    public ArticleDto update(Long id, ArticleDto article) throws ArticleNotFoundException, CategoryNotFoundException;
+    public Article findById(Long id) throws ArticleNotFoundException;
+    public List<Article> findByDate(Date date);
+    public List<Article> findByTags(List<Tag> tagList);
+    public List<Article> findByCategory(List<Category> categoryList);
 }

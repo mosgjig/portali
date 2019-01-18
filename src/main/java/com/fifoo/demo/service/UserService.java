@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface UserService  {
 
-    List<User> getAll();
-    UserDto findByUsername(String username) throws UserFoundException;
-    UserDto create(UserDto userDto) throws UserFoundException;
-    void delete(Long id) throws UserNotFoundException;
-    UserDto update(Long id, UserDto userDto) throws UserNotFoundException;
-    User findOneUser(Long id) throws UserNotFoundException;
+    public List<User> getAll();
+    public UserDto findByUsername(String username) throws UserFoundException;
+    public UserDto create(UserDto userDto) throws UserFoundException;
+    public void delete(Long id) throws UserNotFoundException;
+    public UserDto update(Long id, UserDto userDto) throws UserNotFoundException;
+    public User findOneUser(Long id) throws UserNotFoundException;
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface TagService {
 
-    List<Tag> getAll();
-    TagDto create(TagDto tagDto);
-    void delete(Long id);
+    public List<Tag> getAll();
+    public TagDto create(TagDto tagDto);
+    public void delete(Long id);
 
 }
