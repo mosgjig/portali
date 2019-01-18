@@ -1,6 +1,8 @@
 package com.fifoo.demo.controller;
 
 import com.fifoo.demo.dto.CategoryDto;
+import com.fifoo.demo.exception.CategoryFoundException;
+import com.fifoo.demo.exception.CategoryNotFoundException;
 import com.fifoo.demo.model.Category;
 import com.fifoo.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fifoo.demo.controller.constant.WebDefinition.CATEGORY;
-import static com.fifoo.demo.controller.constant.WebDefinition.CATEGORYID;
-import static com.fifoo.demo.controller.constant.WebDefinition.SLASH;
+import static com.fifoo.demo.controller.constant.WebDefinition.*;
 
 @RestController
 @RequestMapping(CATEGORY)
 public class CategoryController {
 
-    private final CategoryService categoryService;
-
     @Autowired
-    public CategoryController(CategoryService categoryService){
-        this.categoryService = categoryService;
-    }
+    private CategoryService categoryService;
 
     @GetMapping
     public List<Category> getAll(){
@@ -29,17 +25,17 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDto create(@RequestBody CategoryDto categoryDto){
+    public CategoryDto create(@RequestBody CategoryDto categoryDto)throws CategoryFoundException {
         return categoryService.create(categoryDto);
     }
 
-    @DeleteMapping(SLASH + CATEGORYID)
-    public CategoryDto create(@PathVariable("id") long id){
+    @DeleteMapping(SLASH + ID)
+    public CategoryDto create(@PathVariable("id") long id)throws CategoryNotFoundException {
         return categoryService.delete(id);
     }
 
-    @PutMapping(SLASH + CATEGORYID)
-    public CategoryDto update(@PathVariable("id") long id ,@RequestBody CategoryDto categoryDto){
+    @PutMapping(SLASH + ID)
+    public CategoryDto update(@PathVariable("id") long id ,@RequestBody CategoryDto categoryDto) throws  CategoryNotFoundException{
         return categoryService.update(id,categoryDto);
     }
 

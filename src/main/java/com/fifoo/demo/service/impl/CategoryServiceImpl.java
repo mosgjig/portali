@@ -1,6 +1,6 @@
 package com.fifoo.demo.service.impl;
 
-import com.fifoo.demo.converter.CategoryToDto;
+import com.fifoo.demo.converter.CategoryConverter;
 import com.fifoo.demo.dto.CategoryDto;
 import com.fifoo.demo.exception.CategoryFoundException;
 import com.fifoo.demo.exception.CategoryNotFoundException;
@@ -17,63 +17,54 @@ import java.util.Optional;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private  final CategoryRepository categoryRepository;
-    private  final ArticleRepository articleRepository;
-
     @Autowired
-    private final CategoryToDto categoryToDto;
+    private CategoryRepository categoryRepository;
+    private ArticleRepository articleRepository;
+    private CategoryConverter categoryConverter;
 
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ArticleRepository articleRepository,CategoryToDto categoryToDto){
-        this.categoryRepository = categoryRepository;
-        this.articleRepository = articleRepository;
-        this.categoryToDto = categoryToDto;
-    }
     @Override
     public List<Category> getAll() {
         return categoryRepository.findAll();
     }
 
     @Override
-    public CategoryDto create(CategoryDto categoryDto) {
+    public CategoryDto create(CategoryDto categoryDto) throws CategoryFoundException{
+        Category category = null;
         Optional<Category> optionalCategory = categoryRepository.findByName(categoryDto.getName());
-
         if(optionalCategory.isPresent()){
             throw new CategoryFoundException("This category already exists");
         }
         else{
-          categoryRepository.save(CategoryToDto.toCategory(categoryDto));
+         category = categoryRepository.save(CategoryConverter.toCategory(categoryDto));
         }
-        return categoryDto;
+        return CategoryConverter.toDto(category);
     }
 
     @Override
-    public CategoryDto delete(long id) {
+    public void delete(Long id) throws CategoryNotFoundException{
         Optional<Category> optionalCategory = categoryRepository.findById(id);
-
             if(optionalCategory.isPresent()){
             Category newCategory = optionalCategory.get();
             categoryRepository.delete(newCategory);
         }
-        else{
-            throw new CategoryNotFoundException("You can not delete a Category that  doesnt exist.");
-        }
-        return null;
+        else {
+                throw new CategoryNotFoundException("You can not delete a Category that  doesnt exist.");
+            }
     }
 
     @Override
-    public CategoryDto update(long id, CategoryDto categoryDto) {
-        Category newCategory = null;
+    public CategoryDto update(Long id, CategoryDto categoryDto)throws CategoryNotFoundException{
+        Category foundCategory = null;
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if(optionalCategory.isPresent()){
-            newCategory = optionalCategory.get();
+            foundCategory = optionalCategory.get();
         }
         else{
             throw new CategoryNotFoundException("You cannot update a Category that doesnt exist.");
         }
-         newCategory.setName(categoryDto.getName());
+         foundCategory.setName(categoryDto.getName());
 
-            categoryRepository.save(newCategory);
-            return null;
+            Category category = categoryRepository.save(foundCategory);
+            return CategoryConverter.toDto(category);
     }
 }

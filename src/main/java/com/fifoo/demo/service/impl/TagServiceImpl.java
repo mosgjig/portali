@@ -1,6 +1,6 @@
 package com.fifoo.demo.service.impl;
 
-import com.fifoo.demo.converter.TagToDto;
+import com.fifoo.demo.converter.TagConverter;
 import com.fifoo.demo.dto.TagDto;
 import com.fifoo.demo.model.Tag;
 import com.fifoo.demo.repository.TagRepository;
@@ -13,14 +13,9 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private final TagRepository tagRepository;
-
-    private final TagToDto tagToDto;
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository, TagToDto tagToDto){
-        this.tagRepository = tagRepository;
-        this.tagToDto = tagToDto;
-    }
+    private TagRepository tagRepository;
+    private TagConverter tagConverter;
 
     @Override
     public List<Tag> getAll() {
@@ -29,7 +24,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto create(TagDto tagDto) {
-        tagRepository.save(TagToDto.toTag(tagDto));
+        tagRepository.save(TagConverter.toTag(tagDto));
         return tagDto;
     }
     @Override

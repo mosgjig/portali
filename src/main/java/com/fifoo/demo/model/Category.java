@@ -14,7 +14,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false , unique = true)
     @NotEmpty(message = "Name cannot be null")
@@ -23,7 +23,7 @@ public class Category {
     @OneToMany(mappedBy = "category" , orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Article> articles = new ArrayList<>();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -35,7 +35,7 @@ public class Category {
         this.articles = articles;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -8,20 +8,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.fifoo.demo.controller.constant.WebDefinition.SLASH;
-import static com.fifoo.demo.controller.constant.WebDefinition.TAGID;
-import static com.fifoo.demo.controller.constant.WebDefinition.TAGS;
+import static com.fifoo.demo.controller.constant.WebDefinition.*;
 
 @RestController
 @RequestMapping(TAGS)
 public class TagController {
 
-    private TagService tagService;
-
     @Autowired
-    public TagController(TagService tagService){
-        this.tagService = tagService;
-    }
+    private TagService tagService;
 
     @GetMapping
     public List<Tag> getAll(){
@@ -33,7 +27,7 @@ public class TagController {
         return tagService.create(createTag);
     }
 
-    @DeleteMapping(SLASH + TAGID)
+    @DeleteMapping(SLASH + ID)
     public void delete(@PathVariable("id") Long tagId){
             tagService.delete(tagId);
     }

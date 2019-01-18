@@ -5,7 +5,7 @@ import com.fifoo.demo.model.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserToDto {
+public class UserConverter {
 
     public static UserDto toDto(User user){
 

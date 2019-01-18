@@ -5,7 +5,7 @@ import com.fifoo.demo.model.Category;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CategoryToDto {
+public class CategoryConverter {
 
     public static CategoryDto toDto(Category category){
 

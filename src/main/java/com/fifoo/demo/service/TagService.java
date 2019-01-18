@@ -8,9 +8,7 @@ import java.util.List;
 public interface TagService {
 
     List<Tag> getAll();
-
     TagDto create(TagDto tagDto);
-
     void delete(Long id);
 
 }

@@ -1,6 +1,8 @@
 package com.fifoo.demo.controller;
 
 import com.fifoo.demo.dto.ArticleDto;
+import com.fifoo.demo.exception.ArticleNotFoundException;
+import com.fifoo.demo.exception.CategoryNotFoundException;
 import com.fifoo.demo.model.Article;
 import com.fifoo.demo.model.Tag;
 import com.fifoo.demo.service.ArticleService;
@@ -17,12 +19,8 @@ import static com.fifoo.demo.controller.constant.WebDefinition.*;
 @RequestMapping(ARTICLES)
 public class ArticleController {
 
-    private final ArticleService articleService;
-
     @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
-    }
+    private ArticleService articleService;
 
     @GetMapping
     public List<Article> getAll(){
@@ -30,18 +28,18 @@ public class ArticleController {
     }
 
     @PostMapping
-    public void create(@RequestBody ArticleDto articleDto)
+    public void create(@RequestBody ArticleDto articleDto) throws CategoryNotFoundException
     {
         articleService.create(articleDto);
     }
 
-    @DeleteMapping(SLASH + ARTICLEID)
-    public void delete(@PathVariable("id") Long id){
+    @DeleteMapping(SLASH + ID)
+    public void delete(@PathVariable("id") Long id)throws ArticleNotFoundException {
         articleService.delete(id);
     }
 
-    @PutMapping(SLASH + ARTICLEID)
-    public void update(@PathVariable("id") Long id, @RequestBody ArticleDto article){
+    @PutMapping(SLASH + ID)
+    public void update(@PathVariable("id") Long id, @RequestBody ArticleDto article) throws ArticleNotFoundException,CategoryNotFoundException{
         articleService.update(id,article);
     }
 
@@ -50,14 +48,14 @@ public class ArticleController {
         return articleService.findByDate(date);
     }
 
-    @GetMapping(SLASH + ARTICLEID)
-    public Article getArticle(@PathVariable("id") Long id){
+    @GetMapping(SLASH + ID)
+    public Article getArticle(@PathVariable("id") Long id) throws ArticleNotFoundException{
 
         return articleService.findById(id);
     }
 
     @GetMapping(GETBYTAGS)
-    public List<Article> getByTags(@RequestBody List<Tag> lista){
-        return articleService.findByTags(lista);
+    public List<Article> getByTags(@RequestBody List<Tag> tags){
+        return articleService.findByTags(tags);
     }
 }

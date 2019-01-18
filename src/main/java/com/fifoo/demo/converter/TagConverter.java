@@ -5,7 +5,7 @@ import com.fifoo.demo.model.Tag;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TagToDto {
+public class TagConverter {
 
     public static TagDto toDto (Tag tag){
 

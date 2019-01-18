@@ -14,7 +14,7 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
     @NotEmpty(message = "Please write a title")
@@ -39,11 +39,11 @@ public class Article {
     @NotFound(action = NotFoundAction.IGNORE)
     private Category category;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

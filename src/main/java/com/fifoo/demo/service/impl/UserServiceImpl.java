@@ -1,6 +1,6 @@
 package com.fifoo.demo.service.impl;
 
-import com.fifoo.demo.converter.UserToDto;
+import com.fifoo.demo.converter.UserConverter;
 import com.fifoo.demo.dto.UserDto;
 import com.fifoo.demo.exception.UserFoundException;
 import com.fifoo.demo.exception.UserNotFoundException;
@@ -16,47 +16,40 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private  final UserRepository userRepository;
-
     @Autowired
-    private final UserToDto userToDto;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserToDto userToDto){
-        this.userRepository = userRepository;
-        this.userToDto = userToDto;
-    }
+    private UserRepository userRepository;
+    private UserConverter userConverter;
 
     public List<User> getAll(){
         return userRepository.findAll();
     }
 
     @Override
-    public UserDto findByUsername(String username) {
-
+    public UserDto findByUsername(String username) throws UserFoundException{
         Optional <User> user = userRepository.findByUsername(username);
         if(!user.isPresent()){
             throw new UserFoundException("This user exist.");
         }
         else{
-            return userToDto.toDto(user.get());
+            return userConverter.toDto(user.get());
         }
     }
 
     @Override
-    public UserDto create(UserDto userDto) {
+    public UserDto create(UserDto userDto) throws UserFoundException{
+        User user;
        Optional<User> optionalUser = userRepository.findByUsername(userDto.getUsername());
        if(optionalUser.isPresent()){
            throw new UserFoundException("This username already exists.");
        }
        else{
-           userRepository.save(UserToDto.toUser(userDto));
+           user = userRepository.save(UserConverter.toUser(userDto));
        }
-        return userDto;
+        return UserConverter.toDto(user);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) throws UserNotFoundException{
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()){
             User newUser = userOptional.get();
@@ -66,11 +59,10 @@ public class UserServiceImpl implements UserService {
         {
             throw new UserNotFoundException("This user doesnt exist.");
         }
-
     }
 
     @Override
-    public UserDto update(long id, UserDto userDto) {
+    public UserDto update(Long id, UserDto userDto) throws UserNotFoundException {
         User foundUser = null;
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()) {
@@ -84,12 +76,11 @@ public class UserServiceImpl implements UserService {
         foundUser.setLastname(userDto.getLastname());
         foundUser.setUsername(userDto.getUsername());
 
-        userRepository.save(foundUser);
-
-            return UserToDto.toDto(foundUser);
+        User user = userRepository.save(foundUser);
+        return UserConverter.toDto(user);
     }
 
-    public User findOneUser(long id){
+    public User findOneUser(Long id) throws UserNotFoundException{
         Optional<User> user  = userRepository.findById(id);
          if(user.isPresent()){
              User userReturned = user.get();
