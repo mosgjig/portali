@@ -30,8 +30,8 @@ public class CategoryController {
     }
 
     @DeleteMapping(SLASH + ID)
-    public CategoryDto create(@PathVariable("id") long id)throws CategoryNotFoundException {
-        return categoryService.delete(id);
+    public void create(@PathVariable("id") long id)throws CategoryNotFoundException {
+            categoryService.delete(id);
     }
 
     @PutMapping(SLASH + ID)

@@ -15,6 +15,7 @@ public class TagServiceImpl implements TagService {
 
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
     private TagConverter tagConverter;
 
     @Override

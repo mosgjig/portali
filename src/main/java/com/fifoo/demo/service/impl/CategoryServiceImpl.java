@@ -19,7 +19,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
     private CategoryConverter categoryConverter;
 
     @Override
@@ -37,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
         else{
          category = categoryRepository.save(CategoryConverter.toCategory(categoryDto));
         }
-        return CategoryConverter.toDto(category);
+        return categoryConverter.toDto(category);
     }
 
     @Override
@@ -65,6 +67,6 @@ public class CategoryServiceImpl implements CategoryService {
          foundCategory.setName(categoryDto.getName());
 
             Category category = categoryRepository.save(foundCategory);
-            return CategoryConverter.toDto(category);
+            return categoryConverter.toDto(category);
     }
 }

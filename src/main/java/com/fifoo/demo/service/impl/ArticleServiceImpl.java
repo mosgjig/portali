@@ -23,9 +23,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
     private TagRepository tagRepository;
+    @Autowired
     private CategoryRepository categoryRepository;
-    private ArticleController articleController;
+    @Autowired
+    private ArticleConverter articleConverter;
 
     @Override
     public List<Article> getAll() {
@@ -92,7 +95,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleDb.getTags().addAll(tagDb);
         articleDb.getTags().addAll(tagDto);
 
-        return ArticleConverter.toDto(articleRepository.save(articleDb));
+        return articleConverter.toDto(articleRepository.save(articleDb));
     }
 
     @Override

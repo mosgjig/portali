@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private UserConverter userConverter;
 
     public List<User> getAll(){
