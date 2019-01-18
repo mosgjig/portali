@@ -30,12 +30,12 @@ public class CategoryController {
     }
 
     @DeleteMapping(SLASH + ID)
-    public void create(@PathVariable("id") long id)throws CategoryNotFoundException {
+    public void create(@PathVariable("id") Long id)throws CategoryNotFoundException {
             categoryService.delete(id);
     }
 
     @PutMapping(SLASH + ID)
-    public CategoryDto update(@PathVariable("id") long id ,@RequestBody CategoryDto categoryDto) throws  CategoryNotFoundException{
+    public CategoryDto update(@PathVariable("id") Long id ,@RequestBody CategoryDto categoryDto) throws  CategoryNotFoundException{
         return categoryService.update(id,categoryDto);
     }
 

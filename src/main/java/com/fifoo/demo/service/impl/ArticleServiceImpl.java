@@ -50,8 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
         tagDto.removeAll(tagDb);
         article.getTags().addAll(tagDb);
         article.getTags().addAll(tagDto);
-
-       return ArticleConverter.toDto(articleRepository.save(article));
+        article = articleRepository.save(article);
+        return ArticleConverter.toDto(article);
     }
     @Override
     public void delete(Long id) throws ArticleNotFoundException {

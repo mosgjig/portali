@@ -30,12 +30,12 @@ public class UserController {
     }
 
     @DeleteMapping(SLASH + ID)
-    public void delete(@PathVariable("id") long id) throws UserNotFoundException {
+    public void delete(@PathVariable("id") Long id) throws UserNotFoundException {
         userService.delete(id);
     }
 
     @PutMapping(SLASH + ID)
-    public UserDto update(@PathVariable("id") long id , @RequestBody UserDto userDto) throws UserNotFoundException{
+    public UserDto update(@PathVariable("id") Long id , @RequestBody UserDto userDto) throws UserNotFoundException{
         return userService.update(id, userDto);
     }
 
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping(SLASH + ID)
-    public User findOneUser(@PathVariable ("id") long id) throws UserNotFoundException{
+    public User findOneUser(@PathVariable ("id") Long id) throws UserNotFoundException{
         return userService.findOneUser(id);
     }
 
