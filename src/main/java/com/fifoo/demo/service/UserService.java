@@ -14,5 +14,5 @@ public interface UserService  {
     public UserDto create(UserDto userDto) throws UserFoundException;
     public void delete(Long id) throws UserNotFoundException;
     public UserDto update(Long id, UserDto userDto) throws UserNotFoundException;
-    public User findOneUser(Long id) throws UserNotFoundException;
+    public UserDto findOneUser(Long id) throws UserNotFoundException;
 }

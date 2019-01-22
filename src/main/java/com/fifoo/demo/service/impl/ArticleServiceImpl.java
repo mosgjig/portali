@@ -1,6 +1,5 @@
 package com.fifoo.demo.service.impl;
 
-import com.fifoo.demo.controller.ArticleController;
 import com.fifoo.demo.converter.ArticleConverter;
 import com.fifoo.demo.dto.ArticleDto;
 import com.fifoo.demo.exception.ArticleNotFoundException;
@@ -36,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public ArticleDto create(ArticleDto articleDto) throws CategoryNotFoundException{
-        Article article = ArticleConverter.toArticle(articleDto);
+        Article article = ArticleConverter.toEntity(articleDto);
         Optional<Category> category = categoryRepository.findByName(articleDto.getCategory());
         if(category.isPresent()) {
             article.setCategory(category.get());
@@ -51,14 +50,14 @@ public class ArticleServiceImpl implements ArticleService {
         article.getTags().addAll(tagDb);
         article.getTags().addAll(tagDto);
         article = articleRepository.save(article);
+
         return ArticleConverter.toDto(article);
     }
     @Override
     public void delete(Long id) throws ArticleNotFoundException {
         Optional <Article> optionalArticle = articleRepository.findById(id);
         if (optionalArticle.isPresent()) {
-            Article articleNew = optionalArticle.get();
-            articleRepository.delete(articleNew);
+            articleRepository.delete(optionalArticle.get());
         }
         else{
             throw new ArticleNotFoundException("You cannot delete an article that doesn't exist!");
@@ -66,68 +65,74 @@ public class ArticleServiceImpl implements ArticleService {
     }
     @Override
     public ArticleDto update(Long id, ArticleDto articleDto) throws ArticleNotFoundException, CategoryNotFoundException{
+        if(!id.equals(articleDto.getId())){
 
-        Article articleDb = null;
+        }
+        Article foundArticle = null;
         Optional<Article> optionalArticle = articleRepository.findById(id);
         if(optionalArticle.isPresent()) {
-            articleDb = optionalArticle.get();
+            foundArticle = optionalArticle.get();
         }
         else {
             throw new ArticleNotFoundException("You cannot update an article that doesn't exist!");
         }
         Optional<Category> category = categoryRepository.findByName(articleDto.getCategory());
         if(category.isPresent()) {
-            articleDb.setCategory(category.get());
+            foundArticle.setCategory(category.get());
         }
         else {
             throw new CategoryNotFoundException("Category doesn't exist.");
         }
 
-        articleDb.setContent(articleDto.getContent());
-        articleDb.setTitle(articleDto.getTitle());
-        articleDb.setDate(articleDto.getDate());
+        foundArticle.setContent(articleDto.getContent());
+        foundArticle.setTitle(articleDto.getTitle());
+        foundArticle.setDate(articleDto.getDate());
 
-        articleDb.getTags().clear();
+        foundArticle.getTags().clear();
         List <Tag> tagDb = tagRepository.findAll();
         List<Tag> tagDto = articleDto.getTag().stream().map(e -> new Tag(e)).collect(Collectors.toList());
         tagDb = tagDb.stream().filter(e-> tagDto.contains(e)).collect(Collectors.toList());
         tagDto.removeAll(tagDb);
-        articleDb.getTags().addAll(tagDb);
-        articleDb.getTags().addAll(tagDto);
+        foundArticle.getTags().addAll(tagDb);
+        foundArticle.getTags().addAll(tagDto);
+        foundArticle = articleRepository.save(foundArticle);
 
-        return articleConverter.toDto(articleRepository.save(articleDb));
+        return articleConverter.toDto(foundArticle);
     }
 
     @Override
-    public List<Article> findByDate(Date date){
+    public List<ArticleDto> findByDate(Date date){
         List <Article> articleList = articleRepository.findAll();
-        return articleList.stream().filter(o-> o.getDate().getDate()==date.getDate() &&
+        List <Article> finalList = articleList.stream().filter(o-> o.getDate().getDate()==date.getDate() &&
                 o.getDate().getMonth()==date.getMonth() && o.getDate().getYear() == date.getYear()
         ).collect(Collectors.toList());
+        return ArticleConverter.toDtoList((finalList));
     }
 
-    public List<Article> findByTags(List<Tag> tags){
-        List<Article> listaEartikujve = articleRepository.findAll();
-        List<String> tagStringLista = tags.stream().map(Tag::getTitle).collect(Collectors.toList());
-        return listaEartikujve.stream().filter(a->{
-            return a.getTags().stream().anyMatch(p -> tagStringLista.contains(p.getTitle()));
+    public List<ArticleDto> findByTags(List<String> tags){
+        List<Article> articles = articleRepository.findAll();
+        List <Article> finalList = articles.stream().filter(a->{
+            return a.getTags().stream().anyMatch(p -> tags.contains(p.getTitle()));
         }).collect(Collectors.toList());
+        return ArticleConverter.toDtoList(finalList);
     }
 
     @Override
-    public Article findById(Long id) throws ArticleNotFoundException{
+    public ArticleDto findById(Long id) throws ArticleNotFoundException{
         Optional<Article> optionalArticle = articleRepository.findById(id);
+        ArticleDto returned = null;
         if (optionalArticle.isPresent()) {
-            return optionalArticle.get();
+            returned = ArticleConverter.toDto(optionalArticle.get());
+            return returned;
         } else {
             throw new ArticleNotFoundException("This article doesn't exist!");
         }
     }
 
-    public List <Article> findByCategory(List <Category> categoryList){
+    public List<ArticleDto> findByCategory(List<String> categories){
         List<Article> articleList = articleRepository.findAll();
-        List<String>  categoryStringList = categoryList.stream().map(Category::getName).collect(Collectors.toList());
-        return articleList.stream().filter(o-> categoryList.contains(o.getCategory().getName())).collect(Collectors.toList());
+        List<Article> finalList = articleList.stream().filter(o-> categories.contains(o.getCategory().getName())).collect(Collectors.toList());
+        return ArticleConverter.toDtoList(finalList);
     }
 }
 

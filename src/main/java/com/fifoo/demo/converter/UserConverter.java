@@ -10,8 +10,10 @@ public class UserConverter {
     public static UserDto toDto(User user){
 
         UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
         userDto.setName(user.getName());
+        userDto.setPassword(user.getPassword());
         userDto.setLastname(user.getLastname());
         userDto.setEmail(user.getEmail());
 
@@ -21,6 +23,7 @@ public class UserConverter {
     public static User toUser(UserDto userDto){
 
         User user = new User();
+        user.setId(userDto.getId());
         user.setUsername(userDto.getUsername());
         user.setName(userDto.getName());
         user.setPassword(userDto.getPassword());

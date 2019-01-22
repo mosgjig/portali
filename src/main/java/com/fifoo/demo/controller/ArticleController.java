@@ -4,6 +4,7 @@ import com.fifoo.demo.dto.ArticleDto;
 import com.fifoo.demo.exception.ArticleNotFoundException;
 import com.fifoo.demo.exception.CategoryNotFoundException;
 import com.fifoo.demo.model.Article;
+import com.fifoo.demo.model.Category;
 import com.fifoo.demo.model.Tag;
 import com.fifoo.demo.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +45,22 @@ public class ArticleController {
     }
 
     @GetMapping(FROM)
-    public List <Article> getByDate(@RequestParam("date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
+    public List <ArticleDto> getByDate(@RequestParam("date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
         return articleService.findByDate(date);
     }
 
     @GetMapping(SLASH + ID)
-    public Article getArticle(@PathVariable("id") Long id) throws ArticleNotFoundException{
-
+    public ArticleDto getArticle(@PathVariable("id") Long id) throws ArticleNotFoundException{
         return articleService.findById(id);
     }
 
     @GetMapping(GETBYTAGS)
-    public List<Article> getByTags(@RequestBody List<Tag> tags){
+    public List<ArticleDto> getByTags(@RequestBody List<String> tags) {
         return articleService.findByTags(tags);
+    }
+
+    @GetMapping(GETBYCATEGORY)
+    public List<ArticleDto> getByCategory(@RequestBody List<String> categoryList){
+        return articleService.findByCategory(categoryList);
     }
 }

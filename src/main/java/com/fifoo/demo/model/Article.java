@@ -1,5 +1,6 @@
 package com.fifoo.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -28,12 +29,14 @@ public class Article {
     @NotNull(message =" Date cannot be null")
     private Date date;
 
+    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "post_tags",
             joinColumns = { @JoinColumn(name = "article_id") },
             inverseJoinColumns = { @JoinColumn(name = "tag_id") })
     private List<Tag> tags = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="category_id")
     @NotFound(action = NotFoundAction.IGNORE)

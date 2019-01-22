@@ -81,11 +81,12 @@ public class UserServiceImpl implements UserService {
         return UserConverter.toDto(user);
     }
 
-    public User findOneUser(Long id) throws UserNotFoundException{
+    public UserDto findOneUser(Long id) throws UserNotFoundException{
         Optional<User> user  = userRepository.findById(id);
+        UserDto returned = null;
          if(user.isPresent()){
-             User userReturned = user.get();
-             return userReturned;
+             returned = UserConverter.toDto(user.get());
+             return returned;
          }
          else{
              throw new UserNotFoundException("User with id : " +id+ " its not found.");

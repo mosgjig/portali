@@ -8,6 +8,7 @@ import com.fifoo.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 import static com.fifoo.demo.controller.constant.WebDefinition.*;
@@ -39,13 +40,12 @@ public class UserController {
         return userService.update(id, userDto);
     }
 
-    @GetMapping(SLASH + USERNAME)
-    public UserDto getByUsername(@PathVariable("username") String username) throws UserFoundException{
+    @GetMapping(GET)
+    public UserDto getByUsername(@RequestParam(value = "username") String username) throws UserFoundException{
         return userService.findByUsername(username);
     }
-
     @GetMapping(SLASH + ID)
-    public User findOneUser(@PathVariable ("id") Long id) throws UserNotFoundException{
+    public UserDto findOneUser(@PathVariable ("id") Long id) throws UserNotFoundException{
         return userService.findOneUser(id);
     }
 

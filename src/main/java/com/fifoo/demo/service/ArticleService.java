@@ -16,8 +16,8 @@ public interface ArticleService {
     public ArticleDto create(ArticleDto articleDto) throws CategoryNotFoundException;
     public void delete(Long id) throws ArticleNotFoundException;
     public ArticleDto update(Long id, ArticleDto article) throws ArticleNotFoundException, CategoryNotFoundException;
-    public Article findById(Long id) throws ArticleNotFoundException;
-    public List<Article> findByDate(Date date);
-    public List<Article> findByTags(List<Tag> tagList);
-    public List<Article> findByCategory(List<Category> categoryList);
+    public ArticleDto findById(Long id) throws ArticleNotFoundException;
+    public List<ArticleDto> findByDate(Date date);
+    public List<ArticleDto> findByTags(List<String> tags);
+    public List<ArticleDto> findByCategory(List<String> categories);
 }

@@ -9,10 +9,12 @@ public class WebDefinition {
     public static final String GETBYTAGS = "/getByTags";
 
     public static final String CATEGORY = "/category";
+    public static final String GETBYCATEGORY = "/getCategory";
 
     public static final String TAGS = "/tags";
 
     public static final String USERS = "/users";
     public static final String USERNAME = "{username}";
+    public static final String GET = "/get";
 
 }

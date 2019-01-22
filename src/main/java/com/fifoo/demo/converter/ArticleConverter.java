@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class ArticleConverter {
 
     public static ArticleDto toDto(Article article){
-
         ArticleDto articleDto = new ArticleDto();
         articleDto.setId(article.getId());
         articleDto.setTitle(article.getTitle());
@@ -27,14 +26,17 @@ public class ArticleConverter {
         return articleDto;
     }
 
-    public static Article toArticle(ArticleDto articleDto){
+    public static Article toEntity(ArticleDto articleDto){
+        Article article = new Article();
+        article.setTitle(articleDto.getTitle());
+        article.setContent(articleDto.getContent());
+        article.setDate(articleDto.getDate());
 
-            Article article = new Article();
-            article.setTitle(articleDto.getTitle());
-            article.setContent(articleDto.getContent());
-            article.setDate(articleDto.getDate());
+        return article;
+    }
 
-            return article;
+    public static List<ArticleDto> toDtoList(List<Article> list){
+        return list.stream().map(e -> toDto(e)).collect(Collectors.toList());
     }
 }
 
