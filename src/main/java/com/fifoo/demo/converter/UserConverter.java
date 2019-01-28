@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class UserConverter {
 
     public static UserDto toDto(User user){
-
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
@@ -21,7 +20,6 @@ public class UserConverter {
     }
 
     public static User toUser(UserDto userDto){
-
         User user = new User();
         user.setId(userDto.getId());
         user.setUsername(userDto.getUsername());

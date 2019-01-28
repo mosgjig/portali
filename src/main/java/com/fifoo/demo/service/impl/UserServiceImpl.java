@@ -38,14 +38,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) throws UserFoundException{
-        User user;
        Optional<User> optionalUser = userRepository.findByUsername(userDto.getUsername());
        if(optionalUser.isPresent()){
            throw new UserFoundException("This username already exists.");
        }
-       else{
-           user = userRepository.save(UserConverter.toUser(userDto));
-       }
+       User user = userRepository.save(UserConverter.toUser(userDto));
         return UserConverter.toDto(user);
     }
 
@@ -53,8 +50,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) throws UserNotFoundException{
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()){
-            User newUser = userOptional.get();
-            userRepository.delete(newUser);
+            userRepository.delete(userOptional.get());
         }
         else
         {
@@ -64,29 +60,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto update(Long id, UserDto userDto) throws UserNotFoundException {
-        User foundUser = null;
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()) {
-            foundUser = optionalUser.get();
+           User foundUser = optionalUser.get();
+
+            foundUser.setName(userDto.getName());
+            foundUser.setEmail(userDto.getEmail());
+            foundUser.setPassword(userDto.getPassword());
+            foundUser.setLastname(userDto.getLastname());
+            foundUser.setUsername(userDto.getUsername());
+
+            User user = userRepository.save(foundUser);
+            return UserConverter.toDto(user);
         } else{
             throw new UserNotFoundException("You cannot update a User that doesnt exist.");
         }
-        foundUser.setName(userDto.getName());
-        foundUser.setEmail(userDto.getEmail());
-        foundUser.setPassword(userDto.getPassword());
-        foundUser.setLastname(userDto.getLastname());
-        foundUser.setUsername(userDto.getUsername());
-
-        User user = userRepository.save(foundUser);
-        return UserConverter.toDto(user);
     }
 
     public UserDto findOneUser(Long id) throws UserNotFoundException{
         Optional<User> user  = userRepository.findById(id);
-        UserDto returned = null;
          if(user.isPresent()){
-             returned = UserConverter.toDto(user.get());
-             return returned;
+            UserDto userDto = UserConverter.toDto(user.get());
+             return userDto;
          }
          else{
              throw new UserNotFoundException("User with id : " +id+ " its not found.");

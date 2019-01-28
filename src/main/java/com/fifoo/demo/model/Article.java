@@ -29,7 +29,6 @@ public class Article {
     @NotNull(message =" Date cannot be null")
     private Date date;
 
-    @JsonIgnore
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "post_tags",
             joinColumns = { @JoinColumn(name = "article_id") },

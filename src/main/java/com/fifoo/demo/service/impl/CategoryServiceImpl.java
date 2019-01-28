@@ -5,7 +5,6 @@ import com.fifoo.demo.dto.CategoryDto;
 import com.fifoo.demo.exception.CategoryFoundException;
 import com.fifoo.demo.exception.CategoryNotFoundException;
 import com.fifoo.demo.model.Category;
-import com.fifoo.demo.repository.ArticleRepository;
 import com.fifoo.demo.repository.CategoryRepository;
 import com.fifoo.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
     private CategoryConverter categoryConverter;
 
     @Override
@@ -31,23 +28,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto create(CategoryDto categoryDto) throws CategoryFoundException{
-        Category category = null;
         Optional<Category> optionalCategory = categoryRepository.findByName(categoryDto.getName());
         if(optionalCategory.isPresent()){
             throw new CategoryFoundException("This category already exists");
         }
         else{
-         category = categoryRepository.save(CategoryConverter.toCategory(categoryDto));
+            Category category = categoryRepository.save(CategoryConverter.toCategory(categoryDto));
+            return categoryConverter.toDto(category);
         }
-        return categoryConverter.toDto(category);
     }
 
     @Override
     public void delete(Long id) throws CategoryNotFoundException{
         Optional<Category> optionalCategory = categoryRepository.findById(id);
             if(optionalCategory.isPresent()){
-            Category newCategory = optionalCategory.get();
-            categoryRepository.delete(newCategory);
+            categoryRepository.delete(optionalCategory.get());
         }
         else {
                 throw new CategoryNotFoundException("You can not delete a Category that  doesnt exist.");
@@ -56,17 +51,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(Long id, CategoryDto categoryDto)throws CategoryNotFoundException{
-        Category foundCategory = null;
         Optional<Category> optionalCategory = categoryRepository.findById(id);
         if(optionalCategory.isPresent()){
-            foundCategory = optionalCategory.get();
+          Category foundCategory = optionalCategory.get();
+            foundCategory.setName(categoryDto.getName());
+
+            Category category = categoryRepository.save(foundCategory);
+            return categoryConverter.toDto(category);
         }
         else{
             throw new CategoryNotFoundException("You cannot update a Category that doesnt exist.");
         }
-         foundCategory.setName(categoryDto.getName());
-
-            Category category = categoryRepository.save(foundCategory);
-            return categoryConverter.toDto(category);
     }
 }

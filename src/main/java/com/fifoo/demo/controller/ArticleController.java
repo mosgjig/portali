@@ -4,8 +4,6 @@ import com.fifoo.demo.dto.ArticleDto;
 import com.fifoo.demo.exception.ArticleNotFoundException;
 import com.fifoo.demo.exception.CategoryNotFoundException;
 import com.fifoo.demo.model.Article;
-import com.fifoo.demo.model.Category;
-import com.fifoo.demo.model.Tag;
 import com.fifoo.demo.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
