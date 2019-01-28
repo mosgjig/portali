@@ -10,5 +10,4 @@ public interface TagService {
     public List<Tag> getAll();
     public TagDto create(TagDto tagDto);
     public void delete(Long id);
-
 }

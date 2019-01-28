@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
             foundUser.setLastname(userDto.getLastname());
             foundUser.setUsername(userDto.getUsername());
 
-            User user = userRepository.save(foundUser);
-            return UserConverter.toDto(user);
+            foundUser = userRepository.save(foundUser);
+            return UserConverter.toDto(foundUser);
         } else{
             throw new UserNotFoundException("You cannot update a User that doesnt exist.");
         }
@@ -80,8 +80,7 @@ public class UserServiceImpl implements UserService {
     public UserDto findOneUser(Long id) throws UserNotFoundException{
         Optional<User> user  = userRepository.findById(id);
          if(user.isPresent()){
-            UserDto userDto = UserConverter.toDto(user.get());
-             return userDto;
+             return UserConverter.toDto(user.get());
          }
          else{
              throw new UserNotFoundException("User with id : " +id+ " its not found.");

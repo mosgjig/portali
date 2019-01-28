@@ -56,8 +56,8 @@ public class CategoryServiceImpl implements CategoryService {
           Category foundCategory = optionalCategory.get();
             foundCategory.setName(categoryDto.getName());
 
-            Category category = categoryRepository.save(foundCategory);
-            return categoryConverter.toDto(category);
+            foundCategory = categoryRepository.save(foundCategory);
+            return categoryConverter.toDto(foundCategory);
         }
         else{
             throw new CategoryNotFoundException("You cannot update a Category that doesnt exist.");

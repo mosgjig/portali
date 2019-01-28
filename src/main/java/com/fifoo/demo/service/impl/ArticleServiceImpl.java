@@ -66,7 +66,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleDto update(Long id, ArticleDto articleDto) throws ArticleNotFoundException, CategoryNotFoundException{
         if(!id.equals(articleDto.getId())){
-            throw new ArticleNotFoundException("U should write the right id");
+            throw new ArticleNotFoundException("id " + id + " doesn't match the article id " + articleDto.getId());
         }
         Article foundArticle = null;
         Optional<Article> optionalArticle = articleRepository.findById(id);
