@@ -1,8 +1,11 @@
 package com.fifoo.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -91,24 +94,29 @@ public class Article {
 
     @Override
     public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", date=" + date +
-                '}';
+        return new ToStringCreator(this)
+                .append("title", title)
+                .append("content", content)
+                .append("date", date)
+                .toString();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return id == article.id;
+    public boolean equals(Object obj){
+        if(obj instanceof Article){
+            Article that = (Article) obj;
+
+            return new EqualsBuilder().append(this.id, that.id)
+                    .isEquals();
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }
+

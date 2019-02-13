@@ -1,6 +1,10 @@
 package com.fifoo.demo.model;
 
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.core.style.ToStringCreator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -49,22 +53,27 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return new ToStringCreator(this)
+                .append("id", id)
+                .append("name", name)
+                .toString();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return id == category.id;
+    public boolean equals(Object obj){
+        if(obj instanceof Category){
+            Category that = (Category) obj;
+
+            return new EqualsBuilder().append(this.id, that.id)
+                    .isEquals();
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }

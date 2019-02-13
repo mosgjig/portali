@@ -7,9 +7,10 @@ import com.fifoo.demo.exception.CategoryNotFoundException;
 import com.fifoo.demo.model.Category;
 import com.fifoo.demo.repository.CategoryRepository;
 import com.fifoo.demo.service.CategoryService;
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.dozer.Mapper;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryConverter categoryConverter;
+    @Autowired
+    private Mapper mapper;
 
     @Override
     public List<Category> getAll() {
@@ -34,8 +37,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
         else{
             Category category = categoryRepository.save(CategoryConverter.toCategory(categoryDto));
-            return categoryConverter.toDto(category);
+            return toDto(category);
         }
+    }
+
+    public CategoryDto toDto(Category category){
+        return mapper.map(category, CategoryDto.class);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.fifoo.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -57,24 +60,27 @@ public class Tag {
 
     @Override
     public String toString() {
-        return "Tag{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", tags=" + articles +
-                '}';
+        return new ToStringCreator(this)
+                .append("id", id)
+                .append("title", title)
+                .toString();
     }
 
     @Override
-    public boolean equals(Object o){
-        if(o instanceof Tag){
-            return ((Tag)o).getTitle().equals(this.title);
+    public boolean equals(Object obj){
+        if(obj instanceof Tag){
+            Tag that = (Tag) obj;
+
+            return new EqualsBuilder().append(this.id, that.id)
+                    .isEquals();
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
-
 }

@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CategoryConverter {
 
-    public static CategoryDto toDto(Category category){
-
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName(category.getName());
-
-        return categoryDto;
-    }
+//    public static CategoryDto toDto(Category category){
+//
+//        CategoryDto categoryDto = new CategoryDto();
+//        categoryDto.setName(category.getName());
+//
+//        return categoryDto;
+//    }
 
     public static Category toCategory(CategoryDto categoryDto){
 

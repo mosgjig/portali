@@ -1,7 +1,10 @@
 package com.fifoo.demo.model;
 
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.core.style.ToStringCreator;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -93,23 +96,30 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return new ToStringCreator(this)
+                .append("id", id)
+                .append("username", username)
+                .append("name", name)
+                .append("last_name", lastname)
+                .append("email", email)
+                .toString();
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id;
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            User that = (User) obj;
+
+            return new EqualsBuilder().append(this.id, that.id)
+                    .isEquals();
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
     }
 }
